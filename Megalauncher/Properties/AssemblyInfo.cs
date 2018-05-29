@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Dayz Mod Launcher")]
 [assembly: AssemblyDescription("Программа проверки обновлений для dayzmod")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Anionix.ru")]
+[assembly: AssemblyCompany("Anionix.ddns.net")]
 [assembly: AssemblyProduct("DayzModLauncher")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright © 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номер построения и номер редакции по умолчанию, 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.0.8")]
-[assembly: AssemblyFileVersion("2.0.0.2")]
+[assembly: AssemblyVersion("2.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

@@ -18,7 +18,7 @@ namespace Launcher
     public partial class Tools : Form
     {
         string ArmaBetaLink;
-        internal static string ArmaBetaUrl = "http://www.arma2.com/beta-patch.php";
+        internal static string ArmaBetaUrl = "http://www.arma2.com/beta-patches";
         private static readonly string szTemplate = "0123456789ABCDEFGHJKLMNPRSTVWXYZ";
         private Point cursloc = new Point(0, 0);
         private const int WS_CLIPCHILDREN = 33554432;
@@ -149,18 +149,18 @@ namespace Launcher
                     }
                 }
 
-                var latestBetaUrlMatch = Regex.Match(responseBody, @"Latest\s+beta\s+patch:\s*<a\s+href\s*=\s*(?:'|"")([^'""]+)(?:'|"")", RegexOptions.IgnoreCase);
+                var latestBetaUrlMatch = Regex.Match(responseBody, @"<a\s+href\s*=\s*(?:'|"")([^'""]+)(?:'|"")(.*\s+)<span(.*)>latest<\/span>", RegexOptions.IgnoreCase);
                 if (!latestBetaUrlMatch.Success)
-                {
-                    throw new Exception("Не обнаружено информации о последнем патче");
-                }
+					throw new Exception("Не обнаружено информации о последнем патче");
+
                 string latestDownloadUrl = latestBetaUrlMatch.Groups[1].Value;
                 var latestBetaRevisionMatch = Regex.Match(latestDownloadUrl, @"(\d+)\.(?:zip|rar)", RegexOptions.IgnoreCase);
+
                 if (!latestBetaRevisionMatch.Success)
-                {
-                    throw new Exception("Не обнаружена ссылка на последний бэтапатч");
-                }
+					throw new Exception("Не обнаружена ссылка на последний бэтапатч");
+
                 var latestRevision = latestBetaRevisionMatch.Groups[1].Value;
+
                 if (latestRevision != null)
                 {
                     string betaBuild = null;
@@ -168,20 +168,20 @@ namespace Launcher
                     {
                         betaBuild = FileVersionInfo.GetVersionInfo(Main.ArmaBasePath + "\\Expansion\\beta\\arma2oa.exe").ProductVersion;
                         var betaMatch = Regex.Match(betaBuild, @"\d+(;\d+)*", RegexOptions.RightToLeft);     // 1.62.0.103419 -> 103419
+ 
                         if (!betaMatch.Success)
-                        {
-                            throw new Exception("Немогу получить версию бэтапатча");
-                        }
+							throw new Exception("Немогу получить версию бэтапатча");
+
                         betaBuild = betaMatch.Value;
                     }
                     else if (File.Exists(Main.ArmaBasePath + "\\arma2oa.exe"))
                     {
                         betaBuild = FileVersionInfo.GetVersionInfo(Main.ArmaBasePath + "\\arma2oa.exe").ProductVersion;
                         var betaMatch = Regex.Match(betaBuild, @"\d+(;\d+)*", RegexOptions.RightToLeft);
+
                         if (!betaMatch.Success)
-                        {
-                            throw new Exception("Немогу получить версию бэтапатча");
-                        }
+							throw new Exception("Немогу получить версию бэтапатча");
+
                         betaBuild = betaMatch.Value;
                     }
                     else
@@ -214,6 +214,7 @@ namespace Launcher
                 return false;
             }
         }
+        
         private static string getMd5Hash(string input)
         {
             byte[] hash = MD5.Create().ComputeHash(Encoding.Default.GetBytes(input));
@@ -233,6 +234,7 @@ namespace Launcher
             this.timer1.Stop();
             this.setpositions();
         }
+        
         private void headnav_MouseDown(object sender, MouseEventArgs e)
         {
             this.timer1.Start();
@@ -243,6 +245,7 @@ namespace Launcher
         {
             this.Close();
         }
+        
         private void btn_changekey_Click(object sender, EventArgs e)
         {
             byte[] numArray = this.SerialToRegistry(this.box_cdkey.Text);
@@ -259,9 +262,10 @@ namespace Launcher
             else
             {
                 SystemSounds.Hand.Play();
-                int num = (int)MessageBox.Show("Сохранить ключь не удалось");
+                int num = (int)MessageBox.Show("Сохранить ключ не удалось");
             }
         }
+        
         private void btn_delete_Click(object sender, EventArgs e)
         {
             string armaPath = Arma.GetArmaOAPath();

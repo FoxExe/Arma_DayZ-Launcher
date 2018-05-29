@@ -1,5 +1,4 @@
 ﻿using Ionic.Zip;
-using Launcher.Properties;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Security.Principal;
+using Launcher.Properties;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -20,7 +20,7 @@ namespace Launcher
     public partial class Main : Form
     {
         public static string ArmaBasePath = Arma.GetArmaOAPath();
-        public static string UpdatesURL = "http://anionix.ru/updates/";
+        public static string UpdatesURL = "http://anionix.ddns.net/updates/";
         public static string ServerIP = "100.100.100.100";
         public static string ServerPort = "2302";
         public static string strSteamRegPath = "SOFTWARE\\Valve\\Steam";
@@ -67,26 +67,7 @@ namespace Launcher
           formloc = Location;
           cursloc = Cursor.Position;
         }
-
-        public void GetAdminRights()
-        {
-            if (new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
-                return;
-
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.Verb = "runas";
-            startInfo.FileName = Application.ExecutablePath;
-            try
-            {
-                Process.Start(startInfo);
-            }
-            catch
-            {
-                Environment.Exit(0);
-            }
-            Environment.Exit(0);
-        }
-
+        
         public void StartUp(object sender, EventArgs e) // Entry point (Start)
         {
             LoadServersList();
@@ -102,7 +83,7 @@ namespace Launcher
                     }
                     else
                     {
-                        MessageBox.Show("Немогу обнаружить директорию с Arma2. Укажите путь до файла Arma2oa.exe вручную.");
+                        MessageBox.Show("Не могу обнаружить директорию с Arma2. Укажите путь до файла Arma2oa.exe вручную.");
                         if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
                         {
                             ArmaBasePath = folderBrowserDialog1.SelectedPath;
@@ -237,10 +218,6 @@ namespace Launcher
 
         private void UpdateAddon()
         {
-            // Если игра установлена в Program Files, то перезапускаем процесс с правами администратора
-            if (ArmaBasePath.IndexOf("Program Files") > 0)
-                GetAdminRights();
-
             if (!Directory.Exists(ArmaPaths["mod"])) // Создаём нужные директории
                 Directory.CreateDirectory(ArmaPaths["mod"]);
 
@@ -508,7 +485,7 @@ namespace Launcher
 
         private void btn_site_Click(object sender, EventArgs e)
         {
-            Process.Start("http://anionix.ru");
+            Process.Start("http://anionix.ddns.net");
         }
         private void btn_launch_Click(object sender, EventArgs e)
         {
